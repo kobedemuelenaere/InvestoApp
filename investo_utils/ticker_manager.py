@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 import os
 import threading
-import yfinance as yf
+import yfinance_cache as yf
 from datetime import datetime, timedelta
 
 def get_stock_names_from_account(account_file='Account.csv'):

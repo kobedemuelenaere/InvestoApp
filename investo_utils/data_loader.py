@@ -1,5 +1,5 @@
 import pandas as pd
-import yfinance as yf
+import yfinance_cache as yf
 from datetime import datetime, timedelta
 import pytz
 from tqdm import tqdm

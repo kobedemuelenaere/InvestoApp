@@ -149,7 +149,7 @@ class TickerFrame(ttk.Frame):
             if not ticker or ticker.strip() == '':
                 return False, 0.0, "No ticker"
                 
-            import yfinance as yf
+            import yfinance_cache as yf
             stock = yf.Ticker(ticker)
             # Get info to check if ticker exists
             info = stock.history(period="2d")

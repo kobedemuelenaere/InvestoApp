@@ -48,13 +48,13 @@ def calculate_daily_holdings_and_values(df, cash_df, price_data, ticker_map, usd
     # Use today as end date
     end_date = pd.Timestamp.now()
     
-    print(f"\n📅 Analyzing period from {start_date.date()} to {end_date.date()}")
+    print(f"\nAnalyzing period from {start_date.date()} to {end_date.date()}")
     
     # Fetch historical EUR/USD rates
     from investo_utils.data_loader import get_historical_eur_usd_rates
     eur_usd_rates = get_historical_eur_usd_rates(start_date, end_date)
     if eur_usd_rates is None:
-        print(f"⚠️  Using fallback USD to EUR conversion rate of {usd_to_eur}")
+        print(f"  Using fallback USD to EUR conversion rate of {usd_to_eur}")
         eur_usd_rates = pd.Series(usd_to_eur, index=pd.date_range(start_date, end_date))
     
     # Create a list of all timestamps (every 3 hours from 6:00 to 21:00 for each day)
@@ -81,7 +81,7 @@ def calculate_daily_holdings_and_values(df, cash_df, price_data, ticker_map, usd
         all_values[stock] = []
     
     # Calculate holdings and values for each timestamp
-    print("\n🧮 Calculating holdings and values...")
+    print("\nCalculating holdings and values...")
     
     for date in tqdm(dates, desc="Processing values", unit="timestamp"):
         holdings = get_holdings_at_date(df, date)
@@ -92,7 +92,7 @@ def calculate_daily_holdings_and_values(df, cash_df, price_data, ticker_map, usd
         eur_usd_rate = eur_usd_rates.asof(date)
         if pd.isna(eur_usd_rate):
             eur_usd_rate = usd_to_eur  # Fallback to default rate if no data
-            print(f"⚠️  Warning: No EUR/USD rate data found for {date}, using fallback rate of {usd_to_eur}")
+            print(f"  Warning: No EUR/USD rate data found for {date}, using fallback rate of {usd_to_eur}")
         
         # Store total deposits
         total_deposits.append((date, deposits))
@@ -113,17 +113,17 @@ def calculate_daily_holdings_and_values(df, cash_df, price_data, ticker_map, usd
                     price = price_data[stock].asof(date)
                     if pd.isna(price):
                         value = 0
-                        print(f"⚠️  Warning: No price data found for {stock} on {date}")
+                        print(f"  Warning: No price data found for {stock} on {date}")
                     else:
                         # Convert USD to EUR using historical rate if needed
                         if stock in usd_stocks:
                             # Historical rate already gives us USD to EUR conversion factor
                             value = holding * price * eur_usd_rate
-                            # print(f"💱 Converted USD price to EUR using rate: 1 USD = {eur_usd_rate:.4f} EUR")
+                            # print(f"Converted USD price to EUR using rate: 1 USD = {eur_usd_rate:.4f} EUR")
                         else:
                             value = holding * price
                 except Exception as e:
-                    print(f"❌ Error calculating value for {stock} on {date}: {str(e)}")
+                    print(f"  Error calculating value for {stock} on {date}: {str(e)}")
                     value = 0
             else:
                 value = 0

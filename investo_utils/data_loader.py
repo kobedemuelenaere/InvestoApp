@@ -45,7 +45,11 @@ def load_transaction_data(file_path='Account.csv'):
     initial_rows = len(df)
     
     # Convert numeric columns to handle the filtering
-    df['MutatieAmount'] = pd.to_numeric(df['MutatieAmount'], errors='coerce')
+    # Handle European number format (comma as decimal separator) by replacing with dot
+    df['MutatieAmount'] = pd.to_numeric(
+        df['MutatieAmount'].astype(str).str.replace(',', '.', regex=False),
+        errors='coerce'
+    )
     
     # Filter out the unwanted rows
     df = df[~((df['Omschrijving'] == 'Flatex Interest Income') & 
@@ -58,7 +62,11 @@ def load_transaction_data(file_path='Account.csv'):
     cash_df = df.copy()
 
     # Convert numeric columns, handling missing values (MutatieAmount already converted above)
-    cash_df['SaldoAmount'] = pd.to_numeric(cash_df['SaldoAmount'], errors='coerce')
+    # Handle European number format (comma as decimal separator) by replacing with dot
+    cash_df['SaldoAmount'] = pd.to_numeric(
+        cash_df['SaldoAmount'].astype(str).str.replace(',', '.', regex=False),
+        errors='coerce'
+    )
 
     # Convert date and time columns to datetime
     df['Datum'] = pd.to_datetime(df['Datum'], format='%d-%m-%Y')
@@ -100,24 +108,24 @@ def get_stock_prices(ticker, start_date, end_date):
         hist = stock.history(start=start_date, end=end_date + timedelta(days=1))
         
         if hist.empty:
-            print(f"⚠️  Warning: No price data found for {ticker}")
+            print(f"  Warning: No price data found for {ticker}")
             return None
             
         # Use Close price for the values
         prices = hist['Close']
         # Convert index to timezone-naive datetime
         prices.index = prices.index.tz_localize(None)
-        print(f"✓ Successfully fetched {len(prices)} days of data for {ticker}")
+        print(f"  Successfully fetched {len(prices)} days of data for {ticker}")
         
         return prices
         
     except Exception as e:
-        print(f"❌ Error fetching data for {ticker}: {str(e)}")
+        print(f"  Error fetching data for {ticker}: {str(e)}")
         return None
 
 def get_historical_eur_usd_rates(start_date, end_date):
     """Fetch historical EUR/USD conversion rates"""
-    print("\n💱 Fetching historical EUR/USD rates...")
+    print("\nFetching historical EUR/USD rates...")
     try:
         # Get EUR/USD data
         eur_usd = yf.Ticker("EURUSD=X")
@@ -126,7 +134,7 @@ def get_historical_eur_usd_rates(start_date, end_date):
         hist = eur_usd.history(start=start_date, end=end_date + timedelta(days=1))
         
         if hist.empty:
-            print("⚠️  Warning: No EUR/USD rate data found")
+            print("  Warning: No EUR/USD rate data found")
             return None
             
         # Use Close price for the rates
@@ -139,11 +147,11 @@ def get_historical_eur_usd_rates(start_date, end_date):
         # For USD to EUR conversion, we need the reciprocal (1/rate)
         rates = 1 / rates
         
-        print(f"✓ Successfully fetched {len(rates)} days of EUR/USD rates")
-        print(f"✓ Sample rate: 1 USD = {rates.iloc[-1]:.4f} EUR")
+        print(f"  Successfully fetched {len(rates)} days of EUR/USD rates")
+        print(f"  Sample rate: 1 USD = {rates.iloc[-1]:.4f} EUR")
         
         return rates
         
     except Exception as e:
-        print(f"❌ Error fetching EUR/USD rates: {str(e)}")
+        print(f"  Error fetching EUR/USD rates: {str(e)}")
         return None 

@@ -11,14 +11,14 @@ matplotlib.use("TkAgg")
 
 def plot_portfolio_and_deposits(all_values, dates, ticker_map, total_deposits):
     """Generate and display portfolio visualization with multiple subplots."""
-    print("\n📊 Generating portfolio visualization...")
+    print("\nGenerating portfolio visualization...")
     
     # Create figure with 3 subplots vertically stacked
     fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(16, 16), height_ratios=[1, 1.5, 1])
     
     # Add title to the entire figure
     
-    print("💶 Drawing deposits and portfolio value chart...")
+    print("Drawing deposits and portfolio value chart...")
     # Top subplot - Total Deposits and Portfolio Value
     deposit_dates, deposit_amounts = zip(*total_deposits)
     sns.lineplot(x=deposit_dates, y=deposit_amounts, 
@@ -40,7 +40,7 @@ def plot_portfolio_and_deposits(all_values, dates, ticker_map, total_deposits):
     ax1.set_xticklabels([])
     ax1.legend(loc='upper left', bbox_to_anchor=(0.02, 0.98))
     
-    print("💰 Drawing individual holdings value chart...")
+    print("Drawing individual holdings value chart...")
     # Middle subplot - Individual Holdings Values
     for stock, values in all_values.items():
         dates, amounts = zip(*values)
@@ -63,7 +63,7 @@ def plot_portfolio_and_deposits(all_values, dates, ticker_map, total_deposits):
     ax2.set_xticklabels([])
     ax2.legend(loc='upper left', bbox_to_anchor=(0.02, 0.98))
     
-    print("📈 Drawing total gain/loss chart...")
+    print("Drawing total gain/loss chart...")
     # Bottom subplot - Total Gain/Loss
     # Interpolate deposit amounts to match the dates of total values
     deposit_df = pd.DataFrame({'date': deposit_dates, 'amount': deposit_amounts}).set_index('date')
@@ -91,14 +91,14 @@ def plot_portfolio_and_deposits(all_values, dates, ticker_map, total_deposits):
     
     # Adjust layout
     plt.tight_layout()
-    print("\n✨ Done! Displaying portfolio visualization...")
+    print("\nDone! Displaying portfolio visualization...")
     plt.show()
 
 def plot_portfolio_for_gui(all_values, dates, ticker_map, total_deposits):
     """Generate portfolio visualization figure for embedding in GUI.
     This version is optimized for tkinter embedding.
     """
-    print("\n📊 Generating portfolio visualization...")
+    print("\nGenerating portfolio visualization...")
     
     # Create a matplotlib Figure directly (better for tkinter than plt.subplots)
     fig = Figure(figsize=(10, 12), dpi=100, constrained_layout=True)
@@ -114,7 +114,7 @@ def plot_portfolio_for_gui(all_values, dates, ticker_map, total_deposits):
     # Add title to the entire figure with proper padding
     fig.suptitle('Portfolio Overview', fontsize=16, y=0.98)
     
-    print("💶 Drawing deposits and portfolio value chart...")
+    print("Drawing deposits and portfolio value chart...")
     # Top subplot - Total Deposits and Portfolio Value
     deposit_dates, deposit_amounts = zip(*total_deposits)
     
@@ -136,7 +136,7 @@ def plot_portfolio_for_gui(all_values, dates, ticker_map, total_deposits):
     ax1.set_xticklabels([])  # Hide x-axis labels for top plot
     ax1.legend(loc='upper left', fontsize=9)
     
-    print("💰 Drawing individual holdings value chart...")
+    print("Drawing individual holdings value chart...")
     # Middle subplot - Individual Holdings Values
     # Use a color cycle for better distinction between stocks
     colors = plt.cm.tab10.colors
@@ -168,7 +168,7 @@ def plot_portfolio_for_gui(all_values, dates, ticker_map, total_deposits):
     else:
         ax2.legend(loc='upper left', fontsize=9)
     
-    print("📈 Drawing total gain/loss chart...")
+    print("Drawing total gain/loss chart...")
     # Bottom subplot - Total Gain/Loss
     # Interpolate deposit amounts to match the dates of total values
     deposit_df = pd.DataFrame({'date': deposit_dates, 'amount': deposit_amounts}).set_index('date')
@@ -194,7 +194,7 @@ def plot_portfolio_for_gui(all_values, dates, ticker_map, total_deposits):
     ax3.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%Y-%m-%d'))
     ax3.grid(True, alpha=0.3)
     
-    print("\n✨ Done! Visualization ready for display")
+    print("\nDone! Visualization ready for display")
     
     # Return the figure instead of showing it
     return fig
@@ -210,7 +210,7 @@ def create_embedded_plots(parent_frame, all_values, dates, ticker_map, total_dep
     Returns:
     - A dictionary of canvases and figures for reference
     """
-    print("\n📊 Creating embedded visualizations...")
+    print("\nCreating embedded visualizations...")
     
     # Results dictionary to store canvases and figures
     result = {
@@ -383,5 +383,5 @@ def create_embedded_plots(parent_frame, all_values, dates, ticker_map, total_dep
         create_plot(None, "holdings")
         create_plot(None, "performance")
     
-    print("✨ Embedded visualizations created successfully")
+    print("Embedded visualizations created successfully")
     return result 

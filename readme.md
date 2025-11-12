@@ -35,20 +35,18 @@ python -m pip install -r requirements.txt
 ### Running the Application
 
 ```bash
-python main.py
+python InvestoApp.py
 ```
 
 ### Complete Workflow
 
 1. **Start Screen**: Launch the application and click "Start Analysis"
 
-2. **Account Data**:
-
+2. **Account Data**: 
    - The application will check for an existing Degiro account file
    - If none exists, or you want to update, follow the on-screen instructions to obtain and select your Degiro CSV export
 
 3. **Ticker Configuration**:
-
    - Map each stock in your portfolio to its correct ticker symbol
    - Check the "USD" box for stocks traded in US dollars
    - Use the "Check All Tickers" button to validate your selections
